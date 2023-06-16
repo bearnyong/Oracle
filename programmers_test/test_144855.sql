@@ -1,0 +1,33 @@
+-- https://school.programmers.co.kr/learn/courses/30/lessons/144855
+
+/*
+BOOK 테이블
+BOOK_ID 도서ID
+CATEGORY 카테고리
+AUTHOR_ID 저자ID
+PRICE 판매가(원)
+PUBLISHED_DATE 출판일
+
+BOOK_SALES 테이블
+BOOK_ID 도서ID
+SALES_DATE 판매일
+SALES 판매량
+
+<조건>
+2022-01의 카테고리 별 도서 판매량 합산 (SUM)
+카테고리(CATEGORY), 총판매량(TOTAL_SALES) 조회
+카테고리(CATEGORY) 기준 오름차순 - ORDER BY
+
+1. 2022-01의 - WHERE
+2. 카테고리별(CATEGORY) 도서판매량(SALES) 합산(SUM) - GROUP BY
+3. 카테고리(CATEGORY) 기준 오름차순 - ORDER BY
+*/
+
+SELECT
+       B.CATEGORY,
+       SUM(S.SALES) AS TOTAL_SALES
+FROM BOOK_SALES S
+JOIN BOOK B ON (B.BOOK_ID = S.BOOK_ID)
+WHERE TO_CHAR(S.SALES_DATE, 'YYYY-MM') = '2022-01'
+GROUP BY B.CATEGORY
+ORDER BY B.CATEGORY ASC;
