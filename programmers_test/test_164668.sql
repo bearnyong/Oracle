@@ -1,0 +1,44 @@
+-- https://school.programmers.co.kr/learn/courses/30/lessons/164668
+
+/*
+USED_GOODS_BOARD 테이블
+BOARD_ID 게시글ID
+WRITER_ID 작성자ID
+WRITER_ID 게시글 제목
+CONTENTS 게시글 내용
+PRICE 가격
+CREATED_DATE 작성일
+STATUS 거래사태
+VIEWS 조회수
+
+USED_GOODS_USER 테이블
+USER_ID 회원ID
+NICKNAME 닉네임
+CITY 시
+STREET_ADDRESS1 도로명 주소
+STREET_ADDRESS2 상세 주소
+TLNO 전화번호
+
+<조건>
+완료된 중고 거래의 총 금액이 70만원 이상인 사람의
+회원ID USER_ID
+닉네임 NICKNAME
+총거래금액 
+
+<풀이>
+1. 완료된 중고 거래(STATUS = 'DONE')의 총 금액이 700000 이상 - WHERE절
+2. USER_ID, NICKNAME, SUM(PRICE)
+3. SUM(PRICE) 기준으로 오름차순(ASC)
+*/
+
+SELECT 
+       B.WRITER_ID,
+       U.NICKNAME,
+       SUM(B.PRICE)
+FROM USED_GOODS_BOARD B
+JOIN USED_GOODS_USER U ON (U.USER_ID = B.WRITER_ID)
+WHERE B.STATUS = 'DONE'
+GROUP BY B.WRITER_ID, U.NICKNAME
+HAVING SUM(B.PRICE) >= 700000
+ORDER BY SUM(B.PRICE) ASC;
+
