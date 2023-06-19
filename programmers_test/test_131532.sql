@@ -1,0 +1,34 @@
+-- https://school.programmers.co.kr/learn/courses/30/lessons/131532
+
+/*
+USER_INFO 테이블
+USER_ID 회원ID
+GENDER 성별 (NULL, 0:남자, 1:여자)
+AGE 나이
+JOINED 가입일
+
+ONLINE_SALE 테이블
+ONLINE_SALE_ID 온라인 상품 판매 ID
+USER_ID 회원ID
+PRODUCT_ID 상품ID
+SALES_AMOUNT 판매량
+SALES_DATE 판매일
+
+<조건>
+년, 월, 성별별로 상품을 구매한 회원수 집계
+년, 월, 성별을 기준으로 오름차순 정렬
+성별 정보가 없는 경우 결과에서 제외 - NOT NULL
+
+1. 판매일-월(GROUP BY TO_CHAR(SALES_DATE, 'YYYY-MM')), 성별(GENDER)
+
+*/
+
+SELECT TO_CHAR(S.SALES_DATE, 'YYYY') AS "YEAR",
+       TO_NUMBER(TO_CHAR(S.SALES_DATE, 'MM')) AS "MONTH",
+       I.GENDER AS "GENDER",
+       COUNT(DISTINCT S.USER_ID) AS "USERS"
+FROM ONLINE_SALE S 
+JOIN USER_INFO I ON (I.USER_ID  = S.USER_ID)
+WHERE I.GENDER IS NOT NULL
+GROUP BY TO_CHAR(S.SALES_DATE, 'YYYY'), TO_NUMBER(TO_CHAR(S.SALES_DATE, 'MM')), I.GENDER
+ORDER BY "YEAR" ASC, "MONTH" ASC, "GENDER" ASC;
